@@ -1,0 +1,87 @@
+<div class="update-page">
+  <div class="update-container">
+    <div class="card glass">
+      <div class="header-section">
+        <h2>Faturayı Düzenle <span class="invoice-tag">#{{ invoice.invoiceNumber }}</span></h2>
+        <p class="subtitle">Fatura ID: {{ invoice.invoiceId }}</p>
+      </div>
+      
+      <div class="invoice-header grid-2">
+        <div class="form-group">
+          <label>Fatura Numarası (Değiştirilemez)</label>
+          <input type="text" [(ngModel)]="invoice.invoiceNumber" readonly class="readonly-input">
+        </div>
+        <div class="form-group">
+          <label>Müşteri ID</label>
+          <input type="number" [(ngModel)]="invoice.customerId">
+          <small *ngIf="(invoice.customerId || 0) <= 0" style="color: #ff4d4d;">* Müşteri ID 0'dan büyük olmalıdır.</small>
+        </div>
+        <div class="form-group">
+          <label>Fatura Tarihi</label>
+          <input type="date" [(ngModel)]="invoice.invoiceDate">
+        </div>
+        <div class="form-group">
+          <label>Genel Toplam (Otomatik Hesaplanan)</label>
+          <input type="text" [value]="invoice.totalAmount | currency:'TRY':'symbol':'1.2-2'" disabled class="total-input">
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="lines-section">
+        <div class="section-header">
+          <h3>Fatura Kalemleri</h3>
+          <button class="add-line-btn" (click)="addLine()">+ Yeni Kalem Ekle</button>
+        </div>
+
+        <div class="lines-table-wrapper">
+          <table class="lines-table">
+            <thead>
+              <tr>
+                <th>Ürün/Hizmet Adı</th>
+                <th width="120">Adet</th>
+                <th width="150">Birim Fiyat</th>
+                <th width="150">Toplam</th>
+                <th width="80">İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let line of invoice.lines; let i = index">
+                <td>
+                  <input type="text" [(ngModel)]="line.itemName" placeholder="Ürün adı...">
+                </td>
+                <td>
+                  <input type="number" [(ngModel)]="line.quentity" (change)="calculateTotal()" min="1">
+                </td>
+                <td>
+                  <input type="number" [(ngModel)]="line.price" (change)="calculateTotal()" placeholder="0.00">
+                </td>
+                <td class="line-total">
+                  {{ (line.quentity * line.price) | currency:'TRY':'symbol':'1.2-2' }}
+                </td>
+                <td>
+                  <button class="btn-delete" (click)="removeLine(i)" title="Satırı Sil">🗑️</button>
+                </td>
+              </tr>
+              <tr *ngIf="invoice.lines?.length === 0">
+                <td colspan="5" class="empty-msg" style="color: #ff4d4d; text-align: center; padding: 20px;">
+                  ⚠️ Fatura kaydedebilmek için en az bir kalem eklemelisiniz!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+     <div class="actions">
+        <button class="cancel-btn" routerLink="/invoice-list">Vazgeç</button>
+        
+        <button class="update-btn" 
+                (click)="onUpdate()" 
+                [disabled]="!isInvoiceValid()">
+          Değişiklikleri Kaydet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

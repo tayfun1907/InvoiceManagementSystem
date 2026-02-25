@@ -1,0 +1,55 @@
+<div class="list-page">
+  <div class="list-container">
+    <div class="header">
+      <h2>Fatura Listesi</h2>
+        <button class="add-btn" routerLink="/invoice-insert">+ Yeni Fatura</button>
+        <button class="logout-btn" (click)="logout()">Çıkış Yap 🚪</button>
+      </div>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Fatura No</th>
+            <th>Müşteri ID</th>
+            <th>Fatura Tarihi</th>
+            <th>Toplam Tutar</th>
+            <th>Kayıt Tarihi</th>
+            <th>İşlemler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of invoices">
+            <td>{{ item.invoiceNumber }}</td>
+            <td>{{ item.customerId }}</td>
+            <td>{{ item.invoiceDate | date:'dd.MM.yyyy' }}</td>
+            <td>{{ item.totalAmount | currency:'TRY':'symbol':'1.2-2' }}</td>
+            <td>{{ item.invoiceDate | date:'dd.MM.yyyy' }}</td>
+            <td>
+              <button class="edit-icon" [routerLink]="['/invoice-update', item.invoiceId]">✏️</button>
+              <button class="delete-icon" (click)="openDeleteModal(item.invoiceId)">🗑️</button>       
+            </td>
+          </tr>
+
+          <tr *ngIf="invoices.length === 0">
+            <td colspan="8" style="text-align: center; padding: 30px;">
+              Henüz fatura kaydı bulunamadı.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeModal()">
+    <div class="modal-content glass" (click)="$event.stopPropagation()">
+      <div class="modal-icon">⚠️</div>
+      <h3>Faturayı Sil?</h3>
+      <p>Bu işlem geri alınamaz. <b>#{{selectedInvoiceId}}</b> numaralı faturayı silmek istediğinizden emin misiniz?</p>
+      
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="closeModal()">Vazgeç</button>
+        <button class="btn-danger" (click)="confirmDelete()">Evet, Sil</button>
+      </div>
+    </div>
+  </div>
+</div>

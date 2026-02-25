@@ -1,0 +1,24 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="logo">
+      <span class="icon">📝</span>
+    </div>
+    
+    <h1>Fatura Sistemi</h1>
+    <p class="subtitle">Yeni Hesap Oluştur</p>
+
+    <div class="form-group">
+      <input type="text" name="UserName" [(ngModel)]="registerModel.UserName" placeholder="Kullanıcı Adı" />
+    </div>
+
+    <div class="form-group">
+      <input type="password" name="Password" [(ngModel)]="registerModel.Password" placeholder="Şifre" />
+    </div>
+
+    <button class="login-btn" (click)="onRegister()">Kaydol</button>
+
+    <p class="footer-text">
+      Zaten hesabın var mı? <a routerLink="/login">Giriş Yap</a>
+    </p>
+  </div>
+</div>

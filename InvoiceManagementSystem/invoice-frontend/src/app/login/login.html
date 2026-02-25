@@ -1,0 +1,18 @@
+<div class="login-page">
+  <div class="login-card">
+    <h1>📄Fatura Sistemi</h1>
+    <p class="subtitle">Giriş Yap</p>
+
+    <div class="form-group">
+      <input type="text" name="UserName" [(ngModel)]="loginModel.UserName" placeholder="Kullanıcı Adı" />
+    </div>
+
+    <div class="form-group">
+      <input type="password" name="Password" [(ngModel)]="loginModel.Password" placeholder="Şifre" />
+    </div>
+
+    <button class="login-btn" (click)="onLogin()">Giriş Yap</button>
+
+    <p class="footer-text">Hesabın yok mu? <a routerLink="/register">Kaydol</a></p>
+  </div>
+</div>
